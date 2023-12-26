@@ -33,3 +33,4 @@ with open(file_name, 'w') as file:
     
 print("Current working directory:", os.getcwd())
 print("Current file path:", os.path.abspath(__file__))
+
