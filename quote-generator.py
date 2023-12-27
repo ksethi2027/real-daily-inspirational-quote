@@ -1,6 +1,10 @@
 import random 
 from datetime import datetime
-import os
+import tkinter as tk
+import random
+
+
+
 
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
@@ -31,7 +35,18 @@ file_name = f"/Users/kashishsethi/anaconda3/python projectsquote-of-the-day-{tod
 with open(file_name, 'w') as file:
     file.write(random_quote + "\n")
     
-print("Current working directory:", os.getcwd())
-print("Current file path:", os.path.abspath(__file__))
+#print("Current working directory:", os.getcwd())
+#print("Current file path:", os.path.abspath(__file__))
 
 
+def display_quote():
+    window= tk.Tk()
+    window.title("Daily Inspirational Quote")
+    window.geometry("400x200")
+    
+    quote= random.choice(quotes)
+    tk.Label(window, text=quote, wraplength=350, justify="center").pack(expand=True)
+    window.mainloop()
+display_quote()
+
+             
