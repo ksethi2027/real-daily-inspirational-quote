@@ -43,9 +43,19 @@ def display_quote():
     window= tk.Tk()
     window.title("Daily Inspirational Quote")
     window.geometry("400x200")
+    window.configure(bg="ivory2")
     
     quote= random.choice(quotes)
-    tk.Label(window, text=quote, wraplength=350, justify="center").pack(expand=True)
+    quote_text, author = quote.split(" - ")
+    quote_label = tk.Label(window, text=quote_text, wraplength=350, justify="center", font=("Modern", 14), bg='DarkSeaGreen1')
+    quote_label.pack(expand=True)
+
+    author_label = tk.Label(window, text=f"- {author}", font=("Courier", 12, "italic"), bg='DarkSeaGreen3')
+    author_label.pack()
+
+    
+
+
     window.mainloop()
 display_quote()
 
