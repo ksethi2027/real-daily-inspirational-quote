@@ -1,58 +1,128 @@
-import random 
-from datetime import datetime
 import tkinter as tk
-import random
-from openai import OpenAI 
+from openai import OpenAI
 import os
 from dotenv import load_dotenv
 
+# Load environment variables and set up client
+load_dotenv()
+client = OpenAI()
 
-def display_quote(quote):
-    window = tk.Tk()
-    window.title("Daily Inspirational Quote")
-    window.geometry("600x300")  # Adjust the size as needed
-    window.configure(bg="ivory2")
+# Function to fetch a new quote from OpenAI
+def get_quote():
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "you are a quote generator, who finds short, inspirational quotes from famous people based on the type of quote they want. Generate a different quote every time and never repeat them. Everytime the program runs, never repeat a quote again"},
+            {"role": "user", "content": "Find an inspirational quote about academic success"}
+        ]
+    )
+    return completion.choices[0].message.content
 
-    # Splitting quote and author if needed
-    # Assuming quote format is "quote text - author"
-    if " - " in quote:
-        quote_text, author = quote.split(" - ")
+# Function to update the displayed quote
+def update_quote():
+    new_quote = get_quote()
+    if " - " in new_quote:
+        quote_text, author = new_quote.split(" - ")
+        quote_label.config(text=quote_text)
+        author_label.config(text=f"- {author}")
     else:
-        quote_text = quote
-        author = ""
+        quote_label.config(text=new_quote)
+        author_label.config(text="")
 
-    quote_label = tk.Label(window, text=quote_text, wraplength=550, justify="center", font=("Arial", 14), bg='light yellow')
-    quote_label.pack(expand=True)
+# Set up the main application window
+window = tk.Tk()
+window.title("Daily Inspirational Quote Generator")
+window.geometry("600x300")
+window.configure(bg="ivory2")
 
-    if author:
-        author_label = tk.Label(window, text=f"- {author}", font=("Courier", 12, "italic"), bg='light blue')
-        author_label.pack()
+# Label to display the quote
+quote_label = tk.Label(window, wraplength=550, justify="center", font=("Arial", 14), bg='light pink')
+quote_label.pack(expand=True)
 
-    window.mainloop()
+# Label to display the author
+author_label = tk.Label(window, font=("Courier", 12, "italic"), bg='light pink')
+author_label.pack()
+
+# Button to generate a new quote
+new_quote_button = tk.Button(window, text="Get New Quote", command=update_quote)
+new_quote_button.pack()
+
+# Initialize with the first quote
+update_quote()
+
+# Start the main application loop
+window.mainloop()
 
 
 
 
-load_dotenv() 
-
-client=OpenAI()
-
-print("Welcome to Daily Inspirational Quote Generator!")
 
 
-completion = client.chat.completions.create(
-  model="gpt-3.5-turbo",
-  messages=[
-    {"role": "system", "content": "you are a quote generator, who finds short, inspirational quotes from famous people based on the type of quote they want. Generate a different quote every time"},
-    {"role": "user", "content": "Find a inspirational quote about academic success"}
-  ]
-)
 
-quote = completion.choices[0].message
-print(quote)
 
-# Display the quote in a GUI window
-display_quote(quote)
+
+
+
+
+
+
+
+
+# import random 
+# from datetime import datetime
+# import tkinter as tk
+# import random
+# from openai import OpenAI 
+# import os
+# from dotenv import load_dotenv
+
+
+# def display_quote(quote):
+#     window = tk.Tk()
+#     window.title("Daily Inspirational Quote")
+#     window.geometry("600x300")  # Adjust the size as needed
+#     window.configure(bg="ivory2")
+
+#     # Splitting quote and author if needed
+#     # Assuming quote format is "quote text - author"
+#     if " - " in quote:
+#         quote_text, author = quote.split(" - ")
+#     else:
+#         quote_text = quote
+#         author = ""
+
+#     quote_label = tk.Label(window, text=quote_text, wraplength=550, justify="center", font=("Arial", 14), bg='light yellow')
+#     quote_label.pack(expand=True)
+
+#     if author:
+#         author_label = tk.Label(window, text=f"- {author}", font=("Courier", 12, "italic"), bg='light blue')
+#         author_label.pack()
+
+#     window.mainloop()
+
+
+
+
+# load_dotenv() 
+
+# client=OpenAI()
+
+# print("Welcome to Daily Inspirational Quote Generator!")
+
+
+# completion = client.chat.completions.create(
+#   model="gpt-3.5-turbo",
+#   messages=[
+#     {"role": "system", "content": "you are a quote generator, who finds short, inspirational quotes from famous people based on the type of quote they want. Generate a different quote every time"},
+#     {"role": "user", "content": "Find a inspirational quote about academic success"}
+#   ]
+# )
+
+# quote = completion.choices[0].message.content
+# print(quote)
+
+# # Display the quote in a GUI window
+# display_quote(quote)
 
 
 
